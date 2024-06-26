@@ -4,33 +4,33 @@ pipeline {
     stage('build') {
       steps {
         echo 'this is the build job'
-        sh 'npm install'
+        sh 'mvn compile'
       }
     }
 
     stage('test') {
       steps {
         echo 'this is the test job'
-        sh 'npm test'
+        sh 'mvn test'
       }
     }
 
     stage('package') {
       steps {
         echo 'this is the package job'
-        sh 'npm run package'
+        sh 'mvn package -DskipTests'
       }
     }
 
-    stage('artifact') {
+    stage('Archive') {
       steps {
-        archiveArtifacts '**/distribution/*.zip'
+        archiveArtifacts '**/target/*.jar'
       }
     }
 
   }
   tools {
-    nodejs 'nodejs'
+    maven 'maven'
   }
   post {
     always {
